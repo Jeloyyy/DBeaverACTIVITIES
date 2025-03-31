@@ -1,0 +1,34 @@
+use AKOANGGOD;
+
+select * from projects;
+select * from Projecttask;
+select * from technicians;
+select * from Projecttask;
+
+# 7. 	Retrieve projects with more than 2 tasks
+select p.ProjectName, count(pt.TaskID) as Total_Tasks from projects p 
+inner join projecttask pt on p.ProjectID = pt.ProjectID group by p.ProjectName having count(pt.TaskID)>=2;
+
+# 8. 	Count the number of task in each project
+select p.ProjectName, count(pt.TaskID) as Total_Tasks from projects p 
+inner join projecttask pt on p.ProjectID = pt.ProjectID group by p.ProjectName;
+
+# 9. 	List all technicians and the task they are working on 
+select t.technicianID,t.FirstName,t.LastName,pt.TaskDescription,pt.TaskStatus from technicians t 
+inner join projecttask pt on t.technicianID = pt.technicianID where pt.TaskStatus like 'In Progress' order by t.technicianID desc;
+
+# 10. 	Find technicians who have completed (1 or) more than 1 task
+select 		t.technicianID,
+			t.FirstName,
+			t.LastName,
+			pt.TaskDescription,
+			pt.TaskStatus
+			#,count(pt.TaskStatus) as Number_of_Completed_Task 
+from 		technicians t 
+inner join 	projecttask pt on t.technicianID = pt.technicianID 
+where 		pt.TaskStatus 
+like 		'Completed';
+
+
+
+

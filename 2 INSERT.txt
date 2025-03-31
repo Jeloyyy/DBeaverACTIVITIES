@@ -1,0 +1,81 @@
+use AKOANGGOD;
+
+INSERT INTO Projects(ProjectName, ProjectLocation, StartDate, EndDate, Budget, Department)
+VALUES
+    ('Community Center Network Upgrade', 'Barangay Bagong Lipunan, Quezon City', '2024-06-01', '2024-06-20', 150000, 'Community Outreach'),
+    ('City Hall Wi-Fi Installation', 'Quezon City Hall, Metro Manila', '2024-07-15', '2024-07-15', 300000, 'IT'),
+    ('Police Station Network Installation', 'Quezon City Police District, Metro Manila', '2024-08-01', '2024-08-15', 200000, 'Public Safety'),
+    ('Public Library Network Upgrade', 'Quezon City Public Library, Metro Manila', '2024-09-01', '2024-09-30', 250000, 'Education'),
+    ('Elementary School IT Setup', 'San Mateo Elementary School, Rizal', '2024-10-01', '2024-10-20', 120000, 'Education'),
+    ('Hospital Wi-Fi System Installation', 'East Avenue Medical Center, Quezon City', '2024-11-01', '2024-11-15', 500000, 'Health'),
+    ('Fire Station Network Setup', 'Quezon City Fire Station, Metro Manila', '2024-12-01', '2024-12-10', 180000, 'Public Safety'),
+    ('Sports Complex IT Infrastructure', 'Quezon City Sports Complex, Metro Manila', '2025-01-01', '2025-01-31', 450000, 'Sports and Recreation'),
+    ('Community Center Computer Lab', 'Barangay Sta. Lucia, Quezon City', '2025-02-01', '2025-02-20', 175000, 'Community Outreach'),
+    ('High School Network Expansion', 'Commonwealth High School, Quezon City', '2025-03-01', '2025-03-30', 300000, 'Education');
+
+INSERT INTO Technicians(Firstname, Lastname, ContactNumber)
+VALUES
+    ('Emilio', 'Aguinaldo', '09111111111'),
+    ('Antonio', 'Luna', '09222222222'),
+    ('Marcelo', 'Del Pilar', '09333333333'),
+    ('Melchora', 'Aquino', '09444444444'),
+    ('Gregorio', 'Del Pilar', '09555555555'),
+    ('Apolinario', 'Mabini', '09666666666'),
+    ('Diego', 'Silang', '09777777777'),
+    ('Gabriela', 'Silang', '09888888888'),
+    ('Juan', 'Luna', '09999999999'),
+    ('Pio', 'Valenzuela', '09000000000');
+
+INSERT INTO ProjectTask(ProjectID, TaskDescription, TechnicianID, TaskStatus)
+VALUES
+    (3, 'Install server rack and organize cabling', 3, 'In Progress'),
+    (3, 'Configure routers and switches', 4, 'Not Started'),
+    (4, 'Install wireless access points', 5, 'Completed'),
+    (4, 'Conduct speed and coverage testing', 6, 'In Progress'),
+    (5, 'Set up desktop computers and peripherals', 7, 'Completed'),
+    (5, 'Install educational software', 8, 'Not Started'),
+    (6, 'Install high-speed internet lines', 9, 'In Progress'),
+    (7, 'Configure firewalls for network security', 10, 'Completed'),
+    (8, 'Organize structured cabling for sports facilities', 1, 'In Progress'),
+    (9, 'Conduct network assessment and report findings', 2, 'Not Started');
+
+INSERT INTO Materials(MaterialName, UnitPrice)
+VALUES
+    ('Fiber Optic Cable', 50.00),
+    ('Wi-Fi Router', 2000.00),
+    ('Switch', 1500.00),
+    ('Patch Panel', 1000.00),
+    ('Cable Raceway', 500.00),
+    ('Server Rack', 10000.00),
+    ('Wireless Access Point', 3000.00),
+    ('LAN Tester', 1500.00),
+    ('Network Card', 800.00),
+    ('UPS (Uninterruptible Power Supply)', 6000.00);
+
+INSERT INTO ProjectMaterials(ProjectID, MaterialID, QuantityUsed)
+VALUES
+	(3,3,10),
+	(3,4,5),
+	(4,5,20),
+	(4,6,2),
+	(5,7,5),
+	(5,8,1),
+	(6,1,50),
+	(6,2,30),
+	(7,9,10),
+	(7,10,3);
+
+alter table materials add column Stocks int;
+
+update materials set stocks = 69 where materialID = 1;
+update materials set stocks = 30 where materialID = 2;
+update materials set stocks = 25 where materialID = 3;
+update materials set stocks = 10 where materialID = 4;
+update materials set stocks = 5 where materialID = 5;
+update materials set stocks = 64 where materialID = 6;
+update materials set stocks = 3 where materialID = 7;
+update materials set stocks = 9 where materialID = 8;
+update materials set stocks = 1 where materialID = 9;
+update materials set stocks = 7 where materialID = 10;
+
+select * from materials;

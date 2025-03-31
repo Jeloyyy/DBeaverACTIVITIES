@@ -1,0 +1,181 @@
+#####################################################################################################
+#										--ABNORMALIZATION-- 										#
+#####################################################################################################
+create database GUINTO_IETIDb;
+
+use GUINTO_IETIDb;
+
+create table StudentInformationSystem (
+	StudentID INT primary key,
+	Fullname Varchar(100),
+	Email Varchar(100),
+	PhoneNumber1 Varchar(20),
+	PhoneNumber2 Varchar(20),
+	Username Varchar(50),
+	Password Varchar(100),
+	CourseID Int,
+	CourseName Varchar(100),
+	Instructor Varchar(100),
+	Hobbies Varchar(255),
+	Skills Varchar(255),
+	Languages Varchar(255)
+);
+#####################################################################################################
+#												1NF													#
+#####################################################################################################
+drop database GUINTO_IETIDb;
+
+create database GUINTO_IETIDb;
+
+use GUINTO_IETIDb;
+
+create table Students(
+StudentID INT primary key auto_increment,
+Fullname Varchar(100),
+Email varchar(100),
+Username Varchar(50),
+Password Varchar(100)
+);
+
+create table PhoneNumbers (
+PhoneID INT primary key auto_increment,
+PhoneNumber Varchar(20)
+);
+
+create table Hobbies (
+HobbiesID INT primary key auto_increment,
+Hobbies Varchar(255)
+);
+
+create table Skills (
+SKillID INT primary key auto_increment,
+Skills Varchar(255)
+);
+
+create table Languages (
+LanguageID INT primary key auto_increment,
+Languages Varchar(255)
+);
+
+create table Courses (
+CourseID Int primary key auto_increment,
+CourseName Varchar(100),
+Instructor Varchar(100)
+);
+
+create table Profiles (
+StudentID INT,
+ProfileImage varchar(100),
+Address Varchar(255),
+Birtdate DATE,
+Bio Varchar(100),
+ProfileLinks Varchar(255),
+
+foreign key (StudentID) references Students (StudentID)
+);
+
+#####################################################################################################
+#												2NF													#
+#####################################################################################################
+
+create table StudentCourses(
+StudentID INT,
+CourseID INT,
+
+foreign key (StudentID) references Students (StudentID),
+foreign key (CourseID) references Courses (CourseID),
+primary key (StudentID,CourseID)
+);
+
+#####################################################################################################
+#												3NF													#
+#####################################################################################################
+
+create table Instructors(
+InstructorID INT primary key,
+InstructorName varchar(100)
+)
+
+alter table Courses
+drop column Instructor;
+
+alter table Courses
+add column InstructorID INT;
+
+alter table Courses
+add foreign key (InstructorID) references Instructors (InstructorID);
+
+#####################################################################################################
+#												BCNF												#
+#####################################################################################################
+
+
+#####################################################################################################
+#												4NF													#
+#####################################################################################################
+
+create table StudentHobbies (
+StudentID INT,
+HobbiesID INT,
+foreign key (StudentID) references Students (StudentID),
+foreign key (HobbiesID) references Hobbies (HobbiesID),
+primary key (StudentID,HobbiesID)
+);
+
+create table StudentSkills (
+StudentID INT,
+SkillID INT,
+foreign key (StudentID) references Students (StudentID),
+foreign key (SkillID) references Skills (SkillID),
+primary key (StudentID,SkillID)
+);
+
+create table StudentLanguages (
+StudentID INT,
+LanguageID INT,
+foreign key (StudentID) references Students (StudentID),
+foreign key (LanguageID) references Languages (LanguageID),
+primary key (StudentID,LanguageID)
+);
+
+create table StudentPhoneNumbers (
+StudentID INT,
+PhoneID INT,
+foreign key (StudentID) references Students (StudentID),
+foreign key (PhoneID) references PhoneNumbers (PhoneID),
+primary key (StudentID,PhoneID)
+);
+
+#####################################################################################################
+#												5NF													#
+#####################################################################################################
+
+create table Clubs(
+ClubID INT primary key,
+ClubName varchar(100)
+);
+
+create table Events(
+EventID INT primary key,
+EventName varchar(100),
+EventDate DATE
+);
+
+create table StudentClubs(
+StudentID INT,
+ClubID INT,
+
+foreign key (StudentID) references Students (StudentID),
+foreign key (ClubID) references Clubs (ClubID),
+primary key (StudentID,ClubID)
+);
+
+create table ClubEvents(
+ClubID INT,
+EventID INT,
+
+foreign key (ClubID) references Clubs (ClubID),
+foreign key (EventID) references Events (EventID),
+primary key (EventID,ClubID)
+);
+

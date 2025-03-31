@@ -1,0 +1,49 @@
+create database AKOANGGOD;
+
+use AKOANGGOD;
+
+create table Projects (
+ ProjectID INT primary key auto_increment,
+ ProjectName VARCHAR(255),
+ ProjectLocation VARCHAR(255),
+ StartDate date,
+ EndDate date,
+ Budget decimal(10,2),
+ Department VARCHAR(100)
+ );
+
+create table Technicians (
+ TechnicianID INT primary key auto_increment,
+ FirstName VARCHAR(100) not NULL,
+ LastName VARCHAR(100) not NULL,
+ ContactNumber VARCHAR(100)
+ );
+
+create table ProjectTask (
+ TaskID INT primary key auto_increment,
+ ProjectID INT,
+ TaskDescription VARCHAR(255),
+ TechnicianID INT,
+ TaskStatus VARCHAR(20),
+ 
+ foreign key (ProjectID) references Projects(ProjectID),
+ foreign key (TechnicianID) references Technicians(TechnicianId)
+ );
+ 
+ create table Materials (
+ MaterialID INT primary key auto_increment,
+ MaterialName VARCHAR(100),
+ UnitPrice decimal(10,2)
+ );
+ 
+ create table ProjectMaterials (
+ ProjectID INT,
+ MaterialID INT,
+ QuantityUsed INT,
+ 
+ foreign key (ProjectID) references Projects (ProjectID),
+ foreign key (MaterialID) references Materials (MaterialID),
+ primary key (ProjectID,MaterialID)
+ );
+ 
+ 

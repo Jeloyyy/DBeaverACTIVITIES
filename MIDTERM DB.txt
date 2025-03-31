@@ -1,0 +1,51 @@
+create database IETIDb;
+
+use IETIDb;
+
+create table Students(
+StudentID INT primary key auto_increment,
+Fullname Varchar(100),
+Username Varchar(50),
+Password Varchar(100)
+);
+
+create table PhoneNumbers (
+StudentID INT,
+PhoneNumber Varchar(20),
+foreign key (StudentID) references Students (StudentID)
+);
+
+create table EnrollmentTable(
+StudentID INT,
+CourseID INT,
+foreign key (StudentID) references Students (StudentID),
+foreign key (CourseID) references Courses (CourseID),
+primary key (StudentID,CourseID)
+);
+
+create table Courses (
+CourseID Int primary key,
+CourseName Varchar(100),
+Instructor Varchar(100)
+);
+
+create table Hobbies (
+StudentID Int,
+Hobbies Varchar(255),
+foreign key (StudentID) references Students (StudentID)
+);
+
+create table Skills (
+StudentID Int,
+Skills Varchar(255),
+
+foreign key (StudentID) references Students (StudentID)
+);
+
+create table Languages (
+StudentID Int,
+Languages Varchar(255),
+
+foreign key (StudentID) references Students (StudentID)
+);
+

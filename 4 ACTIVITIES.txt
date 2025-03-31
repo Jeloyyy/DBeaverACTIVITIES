@@ -1,0 +1,303 @@
+#0 Use Database
+use AKOANGGOD;
+	
+#1 Retrieve all materials: Selects all columns and rows from the materials table.
+select * from materials;
+
+#2 List all projects: Retrieves the names of all projects.
+select ProjectName from projects;
+
+#3 Get all technicians' first and last names: Selects the first and last names of all technicians.
+select FirstName,LastName from technicians;
+
+#4 Find all tasks with 'In Progress' status: Retrieves the descriptions of tasks that are currently in progress.
+select TaskDescription,TaskStatus from projecttask where TaskStatus="In Progress";
+
+#5 Count the number of materials: Returns the total number of rows in the materials table.
+select count(*) as number_of_materials from materials; 
+select count(MaterialID) as number_of_materials from materials;
+
+#6 Retrieve distinct project departments: Lists all unique department names from the projects table.
+select distinct(Department) from projects;
+select distinct Department from projects;
+
+#7 Get all projects with a budget over 250,000: Retrieves the names and budgets of projects exceeding a specified budget.
+select * from projects where Budget > 250000;
+
+#8 List all materials with unit prices greater than 1000: Lists materials and their prices that are above a certain price.
+select * from materials where UnitPrice > 1000;
+
+#9 List all technicians with a contact number starting with '09': Finds technicians with contact numbers matching a specific pattern.
+select * from technicians where ContactNumber like '09%';
+
+#10 Get the earliest project start date: Determines the minimum (earliest) start date among all projects.
+select StartDate from projects where StartDate = (select Min(StartDate) from Projects);
+select Min(StartDate) from Projects; # minimalize
+
+#11 Find projects that start in 2024: Retrieves projects that begin in a specific year.
+select ProjectName from Projects where Startdate like '2024%';
+select ProjectName from Projects where year(Startdate) = 2024;
+
+#12 Find materials that have 'Cable' in their name: Locates materials with names containing a specific keyword.
+select MaterialName from Materials where MaterialName like '%Cable%';
+
+#13 Get the number of tasks with 'Completed' status: Counts the number of completed tasks.
+select count(TaskStatus) from ProjectTask where TaskStatus = 'Completed';
+select * from projecttask;
+
+#14 Retrieve the project names and their budgets where the project budget is below 200,000: Selects projects with budgets below a certain value.
+select ProjectName,Budget from projects where Budget < 200000;
+
+#15 List all technicians who have 'Aguinaldo' as their last name: Finds technicians with a particular last name.
+select Firstname,Lastname from Technicians where Lastname like 'Aguinaldo';
+select Firstname,Lastname from Technicians where Lastname = 'Aguinaldo';
+
+#16 Find the highest-priced material: Retrieves the material with the highest unit price.
+select UnitPrice from Materials where Unitprice = (select Max(Unitprice) from Materials);
+select Max(Unitprice) from Materials; #minimalize
+
+#17 Find the total number of projects: Counts the total number of projects.
+select count(*) as number_of_Projects from Projects;
+
+#18 Get all tasks assigned to 'Technician 3': Retrieves tasks associated with a specific technician ID.
+select taskdescription from projecttask where technicianID = 3;
+
+#19 Retrieve the latest project based on the end date: Finds the project with the most recent end date.
+select EndDate from projects where EndDate = (select Max(EndDate) from Projects);
+
+#20 Get the total budget for all projects: Calculates the sum of all project budgets.
+select sum(budget) as Sum_of_all_Project_Budget from projects;
+
+#21 Get all technicians who have worked on tasks with a 'Delayed' status: Finds technicians who have worked on delayed tasks.
+select TechnicianID from projecttask where Taskstatus like 'not%';
+#select FirstName from Technicians where technicianID = (select TechnicianID from projecttask where Taskstatus like 'not%');
+
+#22 Find projects with an 'Active' status: Retrieves projects that are currently active.
+select * from ProjectTask where TaskStatus like 'In progress';
+
+#23 Find all materials that are in stock (stock > 0): Lists materials that have a positive stock quantity.
+	#I
+		alter table materials add column Stocks int;
+	#II
+		update materials set stocks = 0 where materialID = 7;
+	#III
+		select * from materials; where stocks > 0;
+
+#24 Get the project names and start dates where the project starts after '2023-01-01': Finds projects starting after a specific date.
+select Projectname,StartDate from Projects where StartDate > '2023-01-01';
+select * from Projects; #YYYY-MM-DD
+
+#25 List all materials with their quantities and prices: Retrieves material names, quantities, and unit prices.
+select * from Materials;
+
+#26 Get the total cost of materials used for each project: Calculates the total cost of materials for each project.
+select Budget from Projects;
+
+#27 Retrieve the number of tasks per project: Counts the number of tasks associated with each project.
+select * from projecttask;
+select ProjectID, count(TaskID) as number_of_task_per_project from projecttask group by ProjectID;
+
+#28 Get all projects assigned to 'Department A': Finds projects belonging to a specific department.
+select ProjectName from projects where department = 'Education';
+
+#29 Find the most recent task assigned to a technician: Finds the most recently started task for a given technician.
+select taskdescription, technicianId from projecttask where startdate = (select min(startdate) from Projects);
+select EndDate from projects where EndDate = (select Max(EndDate) from Projects);
+select max(startdate) from Projects;
+
+#30 Get the total number of materials with a price greater than 500: Counts materials with unit prices above a certain value.
+select count(Unitprice) from materials where unitprice > 500;
+select * from materials;
+
+#Part III. Intermediate Queries
+
+	#List all materials with their quantities and prices: Retrieves material names, quantities, and unit prices.
+		select MaterialName,Stocks,Unitprice from Materials;
+		
+	#Get the total cost of materials used for each project: Calculates the total cost of materials for each project.
+		select * from projects;
+		select * from materials;
+		select * from projecttask;
+		select sum(Unitprice) from Materials;
+	
+#Part IV. Advanced Queries
+	
+	select * from projects;
+	select * from Projecttask;
+	select * from technicians;
+	select * from Projectmaterials;
+	select * from materials;
+	
+#1 Get projects with their start and end dates, order by duration (Calculate duration using DATEDIFF and their budgets)
+	select ProjectName, StartDate, EndDate, datediff(EndDate,StartDate) as Duration from projects order by Duration;
+	
+#2 Find the total budget of projects handled by each department (Group projects by department and sum their budgets)
+	select Department , sum(Budget)	as Total_Budget from projects group by department;
+
+#3 List all tasks along with the corresponding projects name (A simple join between ProjectTasks and Projects)
+	select pt.TaskID, pt.TaskDescription, p.ProjectName
+	from Projecttask pt
+	inner join projects p
+	on pt.ProjectID = p.ProjectID;
+
+#4 Find tasks that are not started along with project names (Join ProjectTask with Projects and filter by task status)
+	select pt.TaskStatus, pt.TaskDescription, p.ProjectName
+	from ProjectTask pt 
+	inner join projects p
+	on pt.ProjectID = p.ProjectID where TaskStatus like 'In progress';
+
+
+#5 Find all completed tasks and the project they belong to (Join to get only the completed tasks and their associated projects)
+	select pt.TaskStatus, pt.TaskDescription, p.ProjectName
+	from ProjectTask pt 
+	inner join projects p
+	on pt.ProjectID = p.ProjectID where TaskStatus like 'Completed';
+
+#6 List all technicians and tasks they are working on (Join Technicians with ProjectTask. A LEFT JOIN ensures technicians with no tasks are also included if desired)
+	select t.firstname, t.lastname, pt.TaskDescription, pt.TaskStatus
+	from technicians t
+	left join ProjectTask pt
+	on t.TechnicianID = pt.TechnicianID;
+
+#7 List all technicians and their Contact details who are currently working on tasks (Join Technicians with ProjectTasks filtering for tasks marked "In Progress")
+	select t.firstname, t.lastname, t.ContactNumber, pt.TaskDescription, pt.TaskStatus
+	from technicians t
+	inner join ProjectTask pt
+	on t.TechnicianID = pt.TechnicianID where TaskStatus like 'In progress';
+
+#8 Retrieve all materials used for a specific project (ProjectID = 3) (Join Materials with ProjectMaterials to filter by a specific projects)
+	select m.MaterialName, pm.quantityused, pm.projectID
+	from Materials m
+	inner join ProjectMaterials pm
+	on m.materialID = pm.materialID where ProjectID = 3;
+
+#9 Get the total quantity of each material used across all projects (Aggregate the total quantities by material across all projects)
+	select m.MaterialName, sum(pm.quantityused) as total_quantity_used
+	from Materials m
+	inner join ProjectMaterials pm
+	on m.materialID = pm.materialID group by MaterialName;
+
+#10 Find projects that used more than 10 units of any material (Join Projects with ProjectMaterials and filter for quantities greater than 10)
+	select p.ProjectName, pm.quantityused
+	from Projects p
+	inner join ProjectMaterials pm
+	on p.ProjectID = pm.ProjectID where QuantityUsed > 10;
+
+#11 find projects and the total number of tasks assigned to them (Join projects with ProjectTasks and count tasks per projects)
+	select p.ProjectName, count(pt.TaskDescription) as Total_Number_of_Tasks
+	from Projects p
+	inner join ProjectTask pt
+	on p.ProjectID = pt.ProjectID group by pt.ProjectId;
+
+#12 Get the count of tasks completed by each technician (Join Technicians with ProjectTasks filtering by the 'Completed' status and grouping by technician) 
+	select t.firstname, t.lastname, count(pt.TaskDescription) as Total_Completed_Tasks
+	from technicians t
+	inner join ProjectTask pt
+	on t.TechnicianID = pt.TechnicianID where pt.TaskStatus like 'Completed' group by t.TechnicianID;
+
+#13 Retrieve the project names and their total material cost, sorted by cost (Join Project, ProjectMaterials, and Materials, calculate cost per project. then sort)
+	select p.ProjectName, m.Unitprice as Total_Material_Cost
+	from 
+		Projects p inner join ProjectMaterials pm on p.ProjectID = pm.ProjectID
+	inner join 
+		Materials m on pm.MaterialID = m.MaterialID;
+
+#14 Get all projects and the total cost of materials used for each (Use LEFT JOINs so that projects without recorded materials are included)
+	select p.ProjectName, m.Unitprice as Total_Material_Cost
+	from projects p
+	left join Materials m on 
+
+#15 List all technicians who worked on multiple projects (Join Technicians with ProjactTask, count distinct projects per technician, and filter)
+	select t.firstname, t.lastname, COUNT(distinct pt.ProjectID) AS NumberOfProjects
+	from technicians t
+	inner join ProjectTask pt on t.TechnicianID = pt.TechnicianID
+	group by t.firstname, t.lastname
+	having NumberOfProjects > 1;
+
+#16 Find technicians working on tasks for projects with budgets over 300,000 (Join across Technicians, ProjactTask, and Projects with a budget condition)
+	select t.firstname, t.lastname, p.ProjectName, p.Budget
+	from technicians t
+	inner join ProjectTask pt on t.TechnicianID = pt.TechnicianID
+	inner join Projects p on pt.ProjectID = p.ProjectID
+	where p.Budget > 300000;
+
+#17 List all task along with the material used for the respective project 
+#(Join ProjectTask with ProjectMaterials and Materialsl. Note: if a project uses multiple materials, a task might appear more than once)
+	select pt.TaskDescription, m.MaterialName, pm.QuantityUsed
+	from ProjectTask pt
+	inner join ProjectMaterials pm on pt.ProjectID = pm.ProjectID
+	inner join Materials m on pm.MaterialID = m.MaterialID;
+
+#18 Retrieve the names of all technicians who either worked on 'Fire Station Network Setup' or have not been assigned to any project
+#(Join Technicians, ProjectTask, and Projects filtering by the project name)
+	select t.firstname, t.lastname
+	from technicians t
+	left join ProjectTask pt on t.TechnicianID = pt.TechnicianID
+	left join Projects p on pt.ProjectID = p.ProjectID
+	where p.ProjectName = 'Fire Station Network Setup' or pt.TechnicianID is null;
+
+
+#19 Get the list of all completed projects (with correlated subquery) (A completed project is defined as one where every task is marked as "Completed")
+	select p.ProjectName
+	from Projects p
+	where not exists   (select 1
+    	   				from ProjectTask pt
+    					where pt.ProjectID = p.ProjectID
+    					and pt.TaskStatus <> 'Completed');
+
+
+#20 List all projects and their departments (Although the department is a column in Projects, this query uses a join with itself (trivial join) to satisfy the join requirement)
+	select p.ProjectName, p.Department
+	from Projects p
+	inner join Projects p2 on p.ProjectID = p2.ProjectID;
+
+
+
+
+
+
+
+
+
+# Experimental
+use AKOANGGOD;
+
+select * from Projects; (p)
+select * from Projecttask; (pt)
+
+select 	p.ProjectID,
+		p.ProjectName,
+		p.ProjectLocation,
+		pt.TaskID,
+		pt.TaskDescription
+	
+			from
+	
+				Projects p
+	
+			inner join
+	
+				Projecttask pt on p.ProjectID=pt.ProjectID;
+				
+SELECT projectID,technicianID FROM projects 
+LEFT JOIN technicians ON projects.projectID = technicians.technicianID;
+
+union
+
+SELECT * FROM projects
+RIGHT JOIN technicians ON projects.projectID = technicians.technicianID;
+
+# count 
+
+select count() 
+
+SELECT projectID,technicianID FROM projects 
+LEFT JOIN technicians ON projects.projectID = technicians.technicianID;
+
+union
+
+SELECT * FROM projects
+RIGHT JOIN technicians ON projects.projectID = technicians.technicianID;
+
+	
+
